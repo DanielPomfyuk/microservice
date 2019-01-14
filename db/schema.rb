@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_13_150318) do
+ActiveRecord::Schema.define(version: 2019_01_14_213249) do
 
   create_table "profiles", force: :cascade do |t|
     t.string "email"
@@ -18,18 +18,18 @@ ActiveRecord::Schema.define(version: 2019_01_13_150318) do
     t.string "first_name"
     t.string "last_name"
     t.integer "phone_number"
-    t.integer "raters_quontity"
+    t.integer "raters_quantity"
     t.float "rating"
+    t.float "balance"
   end
 
   create_table "transactions", force: :cascade do |t|
-    t.string "payee"
-    t.string "payer"
     t.float "amount"
     t.datetime "made_at"
     t.integer "currency", default: 0
-    t.integer "profile_id"
-    t.index ["profile_id"], name: "index_transactions_on_profile_id"
+    t.integer "payer_id"
+    t.integer "payee_id"
+    t.index ["payer_id"], name: "index_transactions_on_payer_id"
   end
 
 end
