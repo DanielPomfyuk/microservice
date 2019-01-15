@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_14_213249) do
+ActiveRecord::Schema.define(version: 2019_01_14_223309) do
 
   create_table "profiles", force: :cascade do |t|
     t.string "email"
@@ -18,9 +18,15 @@ ActiveRecord::Schema.define(version: 2019_01_14_213249) do
     t.string "first_name"
     t.string "last_name"
     t.integer "phone_number"
-    t.integer "raters_quantity"
     t.float "rating"
     t.float "balance"
+  end
+
+  create_table "reviews", force: :cascade do |t|
+    t.float "rating"
+    t.string "comment"
+    t.integer "profile_id"
+    t.index ["profile_id"], name: "index_reviews_on_profile_id"
   end
 
   create_table "transactions", force: :cascade do |t|
