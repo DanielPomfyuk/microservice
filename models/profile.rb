@@ -12,6 +12,10 @@ class Profile < ActiveRecord::Base
 
   def recalculate_rating
     ratings = self.reviews.map {|review| review.rating}
+    if ratings.empty?
+      self.rating = 0.0
+      return
+    end
     self.rating = (ratings.inject(0) {|sum, rate| sum += rate}.to_f) / ratings.size
     self.save!
   end

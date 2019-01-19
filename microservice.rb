@@ -44,8 +44,8 @@ post '/add_transaction' do
   create_handler(newTransaction,'your transaction was made successfully')
 end
 post '/add_review' do
-  param :rating, Float, required: true , blank:false
   param :user_id, Integer, required: true , blank:false
+  param :rating, Float, required: true , blank:false
   param :comment, String, required: true, blank:false
   user = Profile.find(params['user_id'])
   newReview = Review.new
@@ -56,18 +56,22 @@ post '/add_review' do
 end
 
 get '/get_users_info' do
+  param :user_id, Integer, required: true , blank:false
   user = Profile.find(params['user_id'])
   user.to_json
 end
 get '/get_users_reviews' do
+  param :user_id, Integer, required: true , blank:false
   user = Profile.find(params['user_id'])
   user.reviews.to_json
 end
 get '/get_transaction' do
+  param :transaction_id, Integer, required: true , blank:false
   transaction = Transaction.find(params['transaction_id'])
   transaction.to_json
 end
 get '/get_all_transactions' do
+  param :user_id, Integer, required: true , blank:false
   user = Profile.find(params['user_id'])
   receiving = user.recieving_transactions
   receiving.to_json
