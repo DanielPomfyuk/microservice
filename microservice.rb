@@ -2,18 +2,22 @@ require "rubygems"
 require "sinatra"
 require "sinatra/activerecord"
 require "json"
+require "faraday"
 require 'sinatra/base'
 require 'sinatra/param'
 require_relative 'models/profile.rb'
 require_relative 'models/transaction.rb'
 require_relative 'models/review.rb'
+set :port, 3228
 set :database, {adapter: "sqlite3", database: "foo.sqlite3"}
-
+set :show_exceptions, :after_handler
 helpers Sinatra::Param
 before do
   content_type 'application/json'
 end
-
+error 404 do
+  {:message => "there was something wrong with the request", :reason => env['sinatra.error'].message}.to_json
+end
 post '/add_user' do
     param :first_name,  String, required: true , blank:false
     param :last_name,   String, required: true , blank:false
