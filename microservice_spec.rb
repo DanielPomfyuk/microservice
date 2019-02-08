@@ -40,7 +40,20 @@ describe '#microservice' do
       response = JSON.parse(last_response.body)
       expect(response['message']).to eql('new user was successfully added')
     end
-
+    before(:each) do
+      @user = Profile.new
+      @user.first_name = "John"
+      @user.last_name = 'Johns'
+      @user.email = 'example@gmail.com'
+      @user.password = 'kokoko'
+      @user.save!
+      @second_user = Profile.new
+      @second_user.first_name = 'Mike'
+      @second_user.last_name = 'Adams'
+      @second_user.email = 'secondguy@gmail.com'
+      @second_user.password = 'aaaaa'
+      @second_user.save!
+    end
     it 'should reject post request with attempt to create a new transaction without any params ' do
       post '/add_transaction'
       response = JSON.parse(last_response.body)
