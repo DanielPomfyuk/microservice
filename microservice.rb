@@ -8,6 +8,7 @@ require 'sinatra/param'
 require_relative 'models/profile.rb'
 require_relative 'models/transaction.rb'
 require_relative 'models/review.rb'
+require_relative 'errors/DatabaseError'
 set :port, 3228
 set :database, {adapter: "sqlite3", database: "foo.sqlite3"}
 set :show_exceptions, :after_handler
@@ -16,7 +17,13 @@ before do
   content_type 'application/json'
 end
 error 404 do
-  {:message => "there was something wrong with the request", :reason => env['sinatra.error'].message}.to_json
+  {:message => "there was something wrong with the request #{env['sinatra.error'].message}"}.to_json
+end
+error ActiveRecord::StatementInvalid do
+  DatabaseError.new(env['sinatra.error'].message,500).return_json
+end
+error ActiveRecord::RecordNotFound do
+  DatabaseError.new(env['sinatra.error'].message,500).return_json
 end
 post '/add_user' do
     param :first_name,  String, required: true , blank:false
@@ -37,7 +44,6 @@ post '/add_transaction' do
   param :payee_id, Integer, required: true , blank:false
   param :amount, Float, required: true , blank:false
   param :currency, String, in: ['dollar', 'euro','pound']
-
   newTransaction = Transaction.new
   payer = Profile.find(params['payer_id'])
   payee = Profile.find(params['payee_id'])
