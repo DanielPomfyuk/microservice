@@ -14,28 +14,104 @@ describe '#microservice' do
       expect(response['errors']['first_name']).to eql('Parameter is required')
     end
     it 'should reject post request with attempt to create a new user without last_name' do
-      post '/add_user', params = {first_name: 'jack', email: "laalla@gmail.com", password: "password"}
+      post '/add_user', params = {first_name: 'jack', email: "laalla@gmail.com",
+                                  password: "password", phone_number: "0506669955",
+                                  encrypted_password: "encryptedpserd",reset_password_token: "something",
+                                  remember_created_at: "2016-05-04T15:59:21.000Z",created_at: "2016-05-04T15:59:21.000Z",
+                                  updated_at: "2016-05-04T15:59:21.000Z"}
       expect(last_response.status).to eql(400)
       response = JSON.parse(last_response.body)
       expect(response['message']).to eql('Parameter is required')
       expect(response['errors']['last_name']).to eql('Parameter is required')
     end
     it 'should reject post request with attempt to create a new user without email' do
-      post '/add_user', params = {first_name: 'jack', last_name: 'Krupa', password: "password"}
+      post '/add_user', params = {first_name: 'jack',last_name: 'Krupa,',
+                                  password: "password", phone_number: "0506669955",
+                                  encrypted_password: "encryptedpserd",reset_password_token: "something",
+                                  remember_created_at: "2016-05-04T15:59:21.000Z",created_at: "2016-05-04T15:59:21.000Z",
+                                  updated_at: "2016-05-04T15:59:21.000Z"}
       expect(last_response.status).to eql(400)
       response = JSON.parse(last_response.body)
       expect(response['message']).to eql('Parameter is required')
       expect(response['errors']['email']).to eql('Parameter is required')
     end
     it 'should reject post request with attempt to create a new user without password' do
-      post '/add_user', params = {first_name: 'jack', last_name: 'Krupa', email: 'qmail@gmail.com'}
+      post '/add_user', params = {first_name: 'jack',last_name: 'krupa',
+                                  email: "laalla@gmail.com", phone_number: "0506669955",
+                                  encrypted_password: "encryptedpserd",reset_password_token: "something",
+                                  remember_created_at: "2016-05-04T15:59:21.000Z",created_at: "2016-05-04T15:59:21.000Z",
+                                  updated_at: "2016-05-04T15:59:21.000Z"}
       expect(last_response.status).to eql(400)
       response = JSON.parse(last_response.body)
       expect(response['message']).to eql('Parameter is required')
       expect(response['errors']['password']).to eql('Parameter is required')
     end
+    it 'should reject post request with attempt to create a new user without phone number' do
+      post '/add_user', params = {first_name: 'jack',last_name: 'krupa', email: "laalla@gmail.com",
+                                  password: "password", encrypted_password: "encryptedpserd",reset_password_token: "something",
+                                  remember_created_at: "2016-05-04T15:59:21.000Z",created_at: "2016-05-04T15:59:21.000Z",
+                                  updated_at: "2016-05-04T15:59:21.000Z"}
+      expect(last_response.status).to eql(400)
+      response = JSON.parse(last_response.body)
+      expect(response['message']).to eql('Parameter is required')
+      expect(response['errors']['phone_number']).to eql('Parameter is required')
+    end
+    it 'should reject post request with attempt to create a new user without encrypted password' do
+      post '/add_user', params = {first_name: 'jack',last_name: 'krupa', email: "laalla@gmail.com",
+                                  password: "password", phone_number: "0506669955",
+                                  reset_password_token: "something", remember_created_at: "2016-05-04T15:59:21.000Z",
+                                  created_at: "2016-05-04T15:59:21.000Z", updated_at: "2016-05-04T15:59:21.000Z"}
+      expect(last_response.status).to eql(400)
+      response = JSON.parse(last_response.body)
+      expect(response['message']).to eql('Parameter is required')
+      expect(response['errors']['encrypted_password']).to eql('Parameter is required')
+    end
+    it 'should reject post request with attempt to create a new user without reset password token' do
+      post '/add_user', params = {first_name: 'jack',last_name: 'krupa', email: "laalla@gmail.com",
+                                  password: "password", phone_number: "0506669955",
+                                  encrypted_password: "encryptedpserd", remember_created_at: "2016-05-04T15:59:21.000Z",
+                                  created_at: "2016-05-04T15:59:21.000Z", updated_at: "2016-05-04T15:59:21.000Z"}
+      expect(last_response.status).to eql(400)
+      response = JSON.parse(last_response.body)
+      expect(response['message']).to eql('Parameter is required')
+      expect(response['errors']['reset_password_token']).to eql('Parameter is required')
+    end
+    it 'should reject post request with attempt to create a new user without remember_created_at' do
+      post '/add_user', params = {first_name: 'jack',last_name: 'krupa', email: "laalla@gmail.com",
+                                  password: "password", phone_number: "0506669955",
+                                  encrypted_password: "encryptedpserd",reset_password_token: "something",
+                                  created_at: "2016-05-04T15:59:21.000Z", updated_at: "2016-05-04T15:59:21.000Z"}
+      expect(last_response.status).to eql(400)
+      response = JSON.parse(last_response.body)
+      expect(response['message']).to eql('Parameter is required')
+      expect(response['errors']['remember_created_at']).to eql('Parameter is required')
+    end
+    it 'should reject post request with attempt to create a new user without created_at' do
+      post '/add_user', params = {first_name: 'jack',last_name: 'krupa', email: "laalla@gmail.com",
+                                  password: "password", phone_number: "0506669955",
+                                  encrypted_password: "encryptedpserd",reset_password_token: "something",
+                                  remember_created_at: "2016-05-04T15:59:21.000Z", updated_at: "2016-05-04T15:59:21.000Z"}
+      expect(last_response.status).to eql(400)
+      response = JSON.parse(last_response.body)
+      expect(response['message']).to eql('Parameter is required')
+      expect(response['errors']['created_at']).to eql('Parameter is required')
+    end
+    it 'should reject post request with attempt to create a new user without updated_at' do
+      post '/add_user', params = {first_name: 'jack',last_name: 'krupa', email: "laalla@gmail.com",
+                                  password: "password", phone_number: "0506669955",
+                                  encrypted_password: "encryptedpserd",reset_password_token: "something",
+                                  remember_created_at: "2016-05-04T15:59:21.000Z",created_at: "2016-05-04T15:59:21.000Z"}
+      expect(last_response.status).to eql(400)
+      response = JSON.parse(last_response.body)
+      expect(response['message']).to eql('Parameter is required')
+      expect(response['errors']['updated_at']).to eql('Parameter is required')
+    end
     it 'should accept post request with attempt to create a new user ' do
-      post '/add_user', params = {first_name: 'jack', last_name: 'Krupa', password: "password", email: 'emai@email.com'}
+      post '/add_user', params = {first_name: 'jack',last_name: 'krupa', email: (0...50).map { ('a'..'z').to_a[rand(26)] }.join,
+                                  password: "password", phone_number: "0506669955",
+                                  encrypted_password: "encryptedpserd",reset_password_token: (0...50).map { ('a'..'z').to_a[rand(26)] }.join,
+                                  remember_created_at: "2016-05-04T15:59:21.000Z",created_at: "2016-05-04T15:59:21.000Z",
+                                  updated_at: "2016-05-04T15:59:21.000Z"}
       expect(last_response.status).to eql(200)
       response = JSON.parse(last_response.body)
       expect(response['message']).to eql('new user was successfully added')
@@ -44,14 +120,26 @@ describe '#microservice' do
       @user = Profile.new
       @user.first_name = "John"
       @user.last_name = 'Johns'
-      @user.email = 'example@gmail.com'
+      @user.email = (0...50).map { ('a'..'z').to_a[rand(26)] }.join
       @user.password = 'kokoko'
+      @user.phone_number = '050687964'
+      @user.encrypted_password = 'somehash'
+      @user.reset_password_token = (0...50).map { ('a'..'z').to_a[rand(26)] }.join
+      @user.remember_created_at = '2016-05-04T15:59:21.000Z'
+      @user.created_at = '2016-05-04T15:59:21.000Z'
+      @user.updated_at = '2016-05-04T15:59:21.000Z'
       @user.save!
       @second_user = Profile.new
       @second_user.first_name = 'Mike'
       @second_user.last_name = 'Adams'
       @second_user.email = 'secondguy@gmail.com'
       @second_user.password = 'aaaaa'
+      @second_user.phone_number = '050687964'
+      @second_user.encrypted_password = 'somehash'
+      @second_user.reset_password_token = (0...50).map { ('a'..'z').to_a[rand(26)] }.join
+      @second_user.remember_created_at = '2016-05-04T15:59:21.000Z'
+      @second_user.created_at = '2016-05-04T15:59:21.000Z'
+      @second_user.updated_at = '2016-05-04T15:59:21.000Z'
       @second_user.save!
     end
     it 'should reject post request with attempt to create a new transaction without any params ' do

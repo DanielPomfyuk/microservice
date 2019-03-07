@@ -1,6 +1,7 @@
 class DataBaseError < StandardError
+  attr_accessor :status
   def initialize(message, status)
-    @status = status
+    self.status = status
     msg = "Some problem with database. Status is #{@status} . #{message}"
     super(msg)
   end

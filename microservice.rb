@@ -35,6 +35,12 @@ post '/add_user' do
   param :last_name, String, required: true, blank: false
   param :email, String, required: true, blank: false
   param :password, String, required: true, blank: false
+  param :phone_number, String, required: true, blank: false
+  param :encrypted_password, String, required: true, blank: false
+  param :reset_password_token, String, required: true, blank: false
+  param :remember_created_at, DateTime, required: true, blank: false
+  param :created_at, DateTime, required: true, blank: false
+  param :updated_at, DateTime, required: true, blank: false
 
   newUser = Profile.new
   newUser.first_name = params['first_name']
@@ -42,12 +48,20 @@ post '/add_user' do
   newUser.email = params['email']
   newUser.password = params['password']
   newUser.phone_number = params['phone_number']
+  newUser.encrypted_password = params['encrypted_password']
+  newUser.reset_password_token = params['reset_password_token']
+  newUser.remember_created_at = params['remember_created_at']
+  newUser.created_at = params['created_at']
+  newUser.updated_at = params['updated_at']
+
   create_handler(newUser, 'new user was successfully added')
 end
 
 post '/update_user/:user_id' do
   param :user_id, Integer, required: true, blank: false
-  allowed_params = [:first_name, :last_name]
+  allowed_params = [:first_name, :last_name, :email, :password, :phone_number,
+                    :encrypted_password, :reset_password_token, :remember_created_at,
+                    :created_at, :updated_at]
   @user = Profile.find(params[:user_id])
   params.each do |key, value|
     if allowed_params.include? key.to_sym
@@ -108,12 +122,11 @@ get '/get_all_transactions' do
   receiving = user.recieving_transactions
   receiving.to_json
 end
-
 def create_handler(model, message)
   result = {}
   if model.save!
     result[:status] = 'success'
-    result[:message] = message
+    result[:message] = rand(36).to_s(36)
   else
     result[:status] = "failure"
     result[:message] = "something went wrong"
